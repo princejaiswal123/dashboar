@@ -1,26 +1,32 @@
-const clockEl = document.querySelector(".clock");
-const buttons = document.querySelectorAll(".format button");
-setInterval(generateTime, 1000);
+const body = document.querySelector("body"),
+      modeToggle = body.querySelector(".mode-toggle");
+      sidebar = body.querySelector("nav");
+      sidebarToggle = body.querySelector(".sidebar-toggle");
 
-// console.log(date)
-function generateTime() {
-  const format = clockEl.getAttribute("data-format");
-  const date = new Date();
-  let hour = date.getHours();
-  let timeStatus;
-  const min = date.getMinutes();
-  const sec = date.getSeconds();
-  timeStatus = hour > 12 ? "PM" : "AM";
-  if (format === "12") {
-    hour = hour > 12 ? hour % 12 : hour;
-  }
-  clockEl.innerHTML = `<h1>${hour} : ${min} : ${sec} ${timeStatus}</h1>`;
+let getMode = localStorage.getItem("mode");
+if(getMode && getMode ==="dark"){
+    body.classList.toggle("dark");
 }
 
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const format = button.getAttribute("data-format");
-    clockEl.setAttribute("data-format", format);
-    generateTime();
-  });
+let getStatus = localStorage.getItem("status");
+if(getStatus && getStatus ==="close"){
+    sidebar.classList.toggle("close");
+}
+
+modeToggle.addEventListener("click", () =>{
+    body.classList.toggle("dark");
+    if(body.classList.contains("dark")){
+        localStorage.setItem("mode", "dark");
+    }else{
+        localStorage.setItem("mode", "light");
+    }
 });
+
+sidebarToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("close");
+    if(sidebar.classList.contains("close")){
+        localStorage.setItem("status", "close");
+    }else{
+        localStorage.setItem("status", "open");
+    }
+})
